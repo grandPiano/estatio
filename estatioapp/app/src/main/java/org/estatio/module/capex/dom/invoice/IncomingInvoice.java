@@ -301,7 +301,7 @@ public class IncomingInvoice extends Invoice<IncomingInvoice> implements SellerB
     }
 
     @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
-    public void reportAndSync() {
+    public IncomingInvoice reportAndSync() {
         final LocalDate reportedDate = clockService.now();
         for (final InvoiceItem item : getItems()) {
             IncomingInvoiceItem iii = (IncomingInvoiceItem) item;
@@ -310,6 +310,7 @@ public class IncomingInvoice extends Invoice<IncomingInvoice> implements SellerB
                 iii.setReportedDate(reportedDate);
             }
         }
+        return this;
     }
 
     public static class ApprovalInvalidatedEvent extends java.util.EventObject {
